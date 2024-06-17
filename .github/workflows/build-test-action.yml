@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latet
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write

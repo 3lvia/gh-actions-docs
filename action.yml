@@ -23,6 +23,7 @@ inputs:
   no-toc:
     description: 'Set to `true` to disable generation of table of contents.'
     required: false
+    default: 'true'
   no-name:
     description: 'Set to `true` to disable generation of the action name.'
     required: false

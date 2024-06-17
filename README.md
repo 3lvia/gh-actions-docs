@@ -6,7 +6,7 @@ Automatically generate documentation for your GitHub Actions!
 
 Run `gh-actions-docs` in the root of your repository to generate documentation for all your GitHub Actions.
 The documentation will be added to the file `README.md` by default.
-To specify where the documentation should be added, add the following two comments to you README file:
+To specify where the documentation should be added, add the following two comments to your README file:
 
 ```markdown
 <!-- gh-actions-docs-start path=your/cool/action.yml owner=3lvia project=cool-action version=v3 permissions=contents:read,issues:write -->
