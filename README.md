@@ -1,16 +1,19 @@
 # gh-actions-docs
 
-Automatically generate documentation for your GitHub Actions.
+Automatically generate documentation for your GitHub Actions!
 
-## Usage
+# Usage
 
-The documentation will be added to the file `README.md` in the current directory.
-To specify where the documentation should be added, add the following two comments to the file:
+Run `gh-actions-docs` in the root of your repository to generate documentation for all your GitHub Actions.
+The documentation will be added to the file `README.md` by default.
+To specify where the documentation should be added, add the following two comments to you README file:
 
 ```markdown
 <!-- gh-actions-docs-start path=your/cool/action.yml owner=3lvia project=cool-action version=v3 permissions=contents:read,issues:write -->
 <!-- gh-actions-docs-end -->
 ```
+
+Documentation will then be generated between these two comments. You can add multiple comments to generate documentation for multiple actions.
 
 Only the `path` parameter is required, and the `owner`, `project`, `version` and `permissions` parameters are optional.
 
@@ -20,14 +23,13 @@ If any of these parameters are missing, the "Usage" section will not be generate
 The `permissions` parameter is used to generate the "Permissions" section.
 If this parameter is missing, the "Permissions" section will not be generated.
 
-### Docker
+## Docker
 
 ```bash
-docker build . -t gh-actions-docs:latest
-docker run -v $(pwd):/opt/app gh-actions-docs:latest
+docker run -v "$(pwd):/opt/app" ghcr.io/3lvia/gh-actions-docs:latest
 ```
 
-### Local
+## Local
 
 Install [GHCUp](https://www.haskell.org/ghcup), which should include Cabal.
 
@@ -37,7 +39,7 @@ cabal install --overwrite-policy=always
 gh-actions-docs
 ```
 
-### GitHub Actions
+## GitHub Actions
 
 You can also run `gh-actions-docs` as a GitHub Action.
 
@@ -127,6 +129,7 @@ You can also run `gh-actions-docs` as a GitHub Action.
     #
     # Required: no
 ```
+
 <!-- gh-actions-docs-end -->
 
 #### Environment variables (Docker or local)

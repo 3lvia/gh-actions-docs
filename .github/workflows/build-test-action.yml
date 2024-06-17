@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: elvia-runner
+    runs-on: ubuntu-latet
     permissions:
       contents: read
       packages: write
@@ -41,6 +41,7 @@ jobs:
           run-prettier: 'true'
           no-name: 'true'
           no-description: 'true'
+          no-toc: 'true'
 
       - name: Output README for debugging
         if: ${{ github.event_name == 'pull_request' }} # Only output README on PR
@@ -58,4 +59,4 @@ jobs:
           git config user.email github-actions@github.com
           git add README.md
           git commit -m "Update action documentation"
-          # git push
+          git push
