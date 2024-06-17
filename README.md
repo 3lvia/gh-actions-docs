@@ -57,7 +57,7 @@ You can also run `gh-actions-docs` as a GitHub Action.
 | `no-inputs`      | Set to `true` to disable generation of the action inputs.                                                 | no       |             |
 | `no-name`        | Set to `true` to disable generation of the action name.                                                   | no       |             |
 | `no-permissions` | Set to `true` to disable generation of the action permissions.                                            | no       |             |
-| `no-toc`         | Set to `true` to disable generation of table of contents.                                                 | no       |             |
+| `no-toc`         | Set to `true` to disable generation of table of contents.                                                 | no       | `true`      |
 | `no-usage`       | Set to `true` to disable generation of the action usage.                                                  | no       |             |
 | `readme-file`    | The file to write the documentation to.                                                                   | no       | `README.md` |
 | `run-prettier`   | Set to `true` to run Prettier on the generated documentation. This assumes Prettier is already installed. | no       |             |
@@ -112,6 +112,7 @@ You can also run `gh-actions-docs` as a GitHub Action.
     # Set to `true` to disable generation of table of contents.
     #
     # Required: no
+    # Default: 'true'
 
     no-usage:
     # Set to `true` to disable generation of the action usage.
