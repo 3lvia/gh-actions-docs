@@ -23,25 +23,20 @@ If any of these parameters are missing, the "Usage" section will not be generate
 The `permissions` parameter is used to generate the "Permissions" section.
 If this parameter is missing, the "Permissions" section will not be generated.
 
-## Docker
+## Generate a table of contents
 
-```bash
-docker run -v "$(pwd):/opt/app" ghcr.io/3lvia/gh-actions-docs:latest
-```
+`gh-actions-docs` can also generate a table of contents for your README file.
+Add the following two comments to your README file to generate a table of contents:
 
-## Local
-
-Install [GHCUp](https://www.haskell.org/ghcup), which should include Cabal.
-
-```bash
-cabal update
-cabal install --overwrite-policy=always
-gh-actions-docs
+```markdown
+<!-- gh-actions-docs-toc-start -->
+<!-- gh-actions-docs-toc-end -->
 ```
 
 ## GitHub Actions
 
-You can also run `gh-actions-docs` as a GitHub Action.
+`gh-actions-docs` is primarily intended to be used as a GitHub Action.
+The below documentation is actually generated from the `action.yml` file in this repository!
 
 <!-- gh-actions-docs-start path=action.yml owner=3lvia project=gh-actions-docs version=trunk -->
 
@@ -133,7 +128,26 @@ You can also run `gh-actions-docs` as a GitHub Action.
 
 <!-- gh-actions-docs-end -->
 
-#### Environment variables (Docker or local)
+## Docker
+
+You can run `gh-actions-docs` using locally using Docker:
+
+```bash
+docker run -v "$(pwd):/opt/app" ghcr.io/3lvia/gh-actions-docs:latest
+```
+
+## Local
+
+You can also run `gh-actions-docs` locally using Cabal.
+Install [GHCUp](https://www.haskell.org/ghcup), which should include Cabal, and then run:
+
+```bash
+cabal update
+cabal install --overwrite-policy=always
+gh-actions-docs
+```
+
+### Environment variables (Docker or local)
 
 See inputs above or [action.yml](action.yml) for all available environment variables when running using Docker or locally with Cabal.
 The environment variables use all-caps snake-case, e.g. `IGNORE_FILES` instead of `ignore-files`.

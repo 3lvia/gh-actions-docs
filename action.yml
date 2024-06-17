@@ -9,10 +9,10 @@ inputs:
     description: 'Set to `true` to enable debug output.'
     required: false
   ignore-files:
-    description: 'Comma-separated list of `actions.yml`-files to ignore.'
+    description: 'Comma-separated list of `actions.yml`-files to ignore when generating action documentation.'
     required: false
   ignore-headers:
-    description: 'Comma-separated list of headers to ignore.'
+    description: 'Comma-separated list of headers to ignore when generating a table of contents.'
     required: false
   run-prettier:
     description: 'Set to `true` to run Prettier on the generated documentation. This assumes Prettier is already installed.'
@@ -21,9 +21,8 @@ inputs:
     description: 'Set to `true` to disable generation of actions documentation.'
     required: false
   no-toc:
-    description: 'Set to `true` to disable generation of table of contents.'
+    description: 'Set to `true` to disable generation of a table of contents.'
     required: false
-    default: 'true'
   no-name:
     description: 'Set to `true` to disable generation of the action name.'
     required: false
