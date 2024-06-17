@@ -1,0 +1,59 @@
+name: Build image & test action
+
+on:
+  push:
+    branches: [trunk]
+  pull_request:
+    branches: [trunk]
+
+jobs:
+  build:
+    name: Build
+    runs-on: elvia-runner
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Build
+        uses: 3lvia/core-github-actions-templates/build@trunk
+        with:
+          namespace: 'core'
+          name: 'gh-actions-docs'
+          registry: 'ghcr'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  test-action:
+    name: Test using action to generate README
+    runs-on: ubuntu-latest
+    needs: [build-image]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run action
+        uses: ./
+        with:
+          ignore-files: 'your/cool/action.yml'
+          run-prettier: 'true'
+          no-name: 'true'
+          no-description: 'true'
+
+      - name: Output README for debugging
+        if: ${{ github.event_name == 'pull_request' }} # Only output README on PR
+        run: cat README.md
+
+      - name: Commit changes
+        if: ${{ github.event_name == 'push' }} # Only commit changes to README on push
+        run: |
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add README.md
+          git commit -m "Update action documentation"
+          # git push

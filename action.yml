@@ -1,0 +1,57 @@
+name: 'gh-actions-docs'
+description: 'Automatically generate documentation for your GitHub Actions.'
+inputs:
+  readme-file:
+    description: 'The file to write the documentation to.'
+    required: false
+    default: 'README.md'
+  debug:
+    description: 'Set to `true` to enable debug output.'
+    required: false
+  ignore-files:
+    description: 'Comma-separated list of `actions.yml`-files to ignore.'
+    required: false
+  ignore-headers:
+    description: 'Comma-separated list of headers to ignore.'
+    required: false
+  run-prettier:
+    description: 'Set to `true` to run Prettier on the generated documentation. This assumes Prettier is already installed.'
+    required: false
+  no-actions:
+    description: 'Set to `true` to disable generation of actions documentation.'
+    required: false
+  no-toc:
+    description: 'Set to `true` to disable generation of table of contents.'
+    required: false
+  no-name:
+    description: 'Set to `true` to disable generation of the action name.'
+    required: false
+  no-description:
+    description: 'Set to `true` to disable generation of the action description.'
+    required: false
+  no-inputs:
+    description: 'Set to `true` to disable generation of the action inputs.'
+    required: false
+  no-permissions:
+    description: 'Set to `true` to disable generation of the action permissions.'
+    required: false
+  no-usage:
+    description: 'Set to `true` to disable generation of the action usage.'
+    required: false
+
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/3lvia/gh-actions-docs:latest'
+  args:
+    - README_FILE=${{ inputs.readme-file }}
+    - DEBUG=${{ inputs.debug }}
+    - IGNORE_FILES=${{ inputs.ignore-files }}
+    - IGNORE_HEADERS=${{ inputs.ignore-headers }}
+    - RUN_PRETTIER=${{ inputs.run-prettier }}
+    - NO_ACTIONS=${{ inputs.no-actions }}
+    - NO_TOC=${{ inputs.no-toc }}
+    - NO_NAME=${{ inputs.no-name }}
+    - NO_DESCRIPTION=${{ inputs.no-description }}
+    - NO_INPUTS=${{ inputs.no-inputs }}
+    - NO_PERMISSIONS=${{ inputs.no-permissions }}
+    - NO_USAGE=${{ inputs.no-usage }}
