@@ -38,7 +38,7 @@ Add the following two comments to your README file to generate a table of conten
 `gh-actions-docs` is primarily intended to be used as a GitHub Action.
 The below documentation is actually generated from the `action.yml` file in this repository!
 
-<!-- gh-actions-docs-start path=action.yml owner=3lvia project=gh-actions-docs version=trunk -->
+<!-- gh-actions-docs-start path=action.yml owner=3lvia project=gh-actions-docs version=v1 -->
 
 ### Inputs
 
