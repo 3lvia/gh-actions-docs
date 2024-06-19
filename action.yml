@@ -1,5 +1,5 @@
 name: 'gh-actions-docs'
-description: 'Automatically generate documentation for your GitHub Actions.'
+description: 'Automatically generate documentation for your GitHub Actions!'
 inputs:
   readme-file:
     description: 'The file to write the documentation to.'
@@ -15,7 +15,7 @@ inputs:
     description: 'Comma-separated list of headers to ignore when generating a table of contents.'
     required: false
   run-prettier:
-    description: 'Set to `true` to run Prettier on the generated documentation. This assumes Prettier is already installed.'
+    description: 'Set to `true` to run Prettier on the generated documentation.'
     required: false
   no-actions:
     description: 'Set to `true` to disable generation of actions documentation.'
