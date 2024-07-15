@@ -1,4 +1,13 @@
 cradle:
   cabal:
-    - path: "app/Main.hs"
+    - path: "src/Main.hs"
+      component: "gh-actions-docs:exe:gh-actions-docs"
+
+    - path: "src/Actions.hs"
+      component: "gh-actions-docs:exe:gh-actions-docs"
+
+    - path: "src/Config.hs"
+      component: "gh-actions-docs:exe:gh-actions-docs"
+
+    - path: "src/TableOfContents.hs"
       component: "gh-actions-docs:exe:gh-actions-docs"
