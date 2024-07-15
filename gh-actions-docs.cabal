@@ -14,25 +14,19 @@ cabal-version:      3.0
 name:               gh-actions-docs
 
 -- The package version.
--- See the Haskell package versioning policy (PVP) for standards
--- guiding when and how versions should be incremented.
--- https://pvp.haskell.org
--- PVP summary:     +-+------- breaking API changes
---                  | | +----- non-breaking API additions
---                  | | | +--- code changes with no API change
-version:            0.1.0.0
+version:            1.0.2
 
 -- A short (one-line) description of the package.
--- synopsis:
+synopsis:           Automatically generate documentation for your GitHub Actions!
 
 -- A longer description of the package.
 -- description:
 
 -- The license under which the package is released.
--- license:            MIT
+license:            MIT
 
 -- The file containing the license text.
--- license-file:       LICENSE
+license-file:       LICENSE
 
 -- The package author(s).
 author:             Andreas Salhus Bakseter
@@ -45,7 +39,7 @@ maintainer:         141913422+baksetercx@users.noreply.github.com
 build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
--- extra-doc-files:    CHANGELOG.md
+extra-doc-files:    README.md
 
 -- Extra source files to be distributed with the package, such as examples, or a tutorial module.
 -- extra-source-files:
@@ -62,7 +56,9 @@ executable gh-actions-docs
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    -- other-modules:
+    other-modules:     Actions
+                     , Config
+                     , TableOfContents
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -79,7 +75,7 @@ executable gh-actions-docs
                     , process
 
     -- Directories containing source files.
-    hs-source-dirs:   app
+    hs-source-dirs:   src
 
     -- Base language which the package is written in.
     default-language: Haskell2010

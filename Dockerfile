@@ -12,7 +12,8 @@ RUN cabal update
 COPY gh-actions-docs.cabal ./
 RUN cabal build --only-dependencies
 
-COPY app ./app
+COPY src ./src
+COPY LICENSE README.md ./
 
 RUN cabal install --overwrite-policy=always
 
