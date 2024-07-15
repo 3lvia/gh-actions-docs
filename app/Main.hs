@@ -133,6 +133,9 @@ toEnglishBool :: Bool -> String
 toEnglishBool True  = "yes"
 toEnglishBool False = "no"
 
+replaceNewLinesWithSpaces :: String -> String
+replaceNewLinesWithSpaces = unpack . replace "\n" " " . pack
+
 actionStartTagPrefix :: String
 actionStartTagPrefix = "<!-- gh-actions-docs-start"
 
@@ -156,7 +159,7 @@ prettyPrintInputs (Just inputs') =
             ( \(name', ActionInput des req def) ->
                 "`" ++ name' ++ "`"
                     ++ "|"
-                    ++ fromMaybe "" des
+                    ++ maybe "" replaceNewLinesWithSpaces des
                     ++ "|"
                     ++ maybe "no" toEnglishBool req
                     ++ "|"
@@ -219,7 +222,7 @@ prettyPrintUsageInputs name' (ActionInput des req def) =
         ++ "\n"
   where
     indent = replicate 4 ' '
-    formatDescription des' = indent ++ "# " ++ des' ++ "\n" ++ indent ++ "#\n"
+    formatDescription des' = indent ++ "# " ++ replaceNewLinesWithSpaces des' ++ "\n" ++ indent ++ "#\n"
     formatRequired req' = indent ++ "# Required: " ++ toEnglishBool req' ++ "\n"
     formatDefault def' = indent ++ "# Default: '" ++ def' ++ "'\n"
 
