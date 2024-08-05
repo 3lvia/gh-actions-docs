@@ -31,21 +31,27 @@ jobs:
           name: 'gh-actions-docs'
           checkout: 'false'
           registry: 'ghcr'
-          docker-cache-tag: 'latest'
-          docker-additional-tags: ${{ env.VERSION_TAG }} # will be empty if not a push event
+          docker-cache-tag: ${{ github.event_name == 'push' && 'latest' || 'latest-cache' }}
+          docker-additional-tags: ${{ env.VERSION_TAG }}
           ghcr-omit-repository-name: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create release, will fail if release already exists
+      - name: Create release if new version
         if: ${{ github.event_name == 'push' }}
         run: |
+          latest_version=$(gh release list --json name,isLatest -q '.[] | select(.isLatest == true) | .name')
+          if [[ "$latest_version" == '${{ env.VERSION_TAG }}' ]]; then
+            echo "Version already released."
+            exit 0
+          fi
+
           gh release create \
             '${{ env.VERSION_TAG }}' \
             --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Override old major tag
+      - name: Override major tag
         if: ${{ github.event_name == 'push' }}
         run: |
           git config user.name github-actions
