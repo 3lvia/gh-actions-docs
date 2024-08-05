@@ -5,8 +5,9 @@ Automatically generate documentation for your GitHub Actions!
 # Usage
 
 Run `gh-actions-docs` in the root of your repository to generate documentation for all your GitHub Actions.
+See [this section](#inputs) and onwards for an example of what the generated documentation looks like.
 The documentation will be added to the file `README.md` by default.
-To specify where the documentation should be added, add the following two comments to your README file:
+To specify where in the file the documentation should be added, add the following two comments to your README file:
 
 ```markdown
 <!-- gh-actions-docs-start path=your/cool/action.yml owner=3lvia project=cool-action version=v3 permissions=contents:read,issues:write -->
@@ -150,3 +151,10 @@ gh-actions-docs
 
 See inputs above or [action.yml](action.yml) for all available environment variables when running using Docker or locally with Cabal.
 The environment variables use all-caps snake-case, e.g. `IGNORE_FILES` instead of `ignore-files`.
+
+# Development
+
+## Releasing a new version
+
+To release a new version, update the version tag in both [action.yml](action.yml) and [gh-actions-docs.cabal](gh-actions-docs.cabal).
+A new git tag and GitHub release should then be generated when pushing the changes to `trunk`.

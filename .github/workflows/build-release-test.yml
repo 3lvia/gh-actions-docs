@@ -1,0 +1,92 @@
+name: Build, release and test
+
+on:
+  push:
+    branches: [trunk]
+    paths-ignore: ['README.md']
+  pull_request:
+    branches: [trunk]
+    paths-ignore: ['README.md']
+
+jobs:
+  build-release:
+    name: Build and release
+    runs-on: elvia-runner
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Resolve version from Cabal file
+        run: |
+          version=$(cat gh-actions-docs.cabal | grep '^version:' | sed -e 's/version:\s*//g')
+          echo "VERSION_TAG=v$version" >> "$GITHUB_ENV"
+          echo "MAJOR_VERSION_TAG=v$(echo $version | cut -d. -f1)" >> "$GITHUB_ENV"
+
+      - name: Build
+        uses: 3lvia/core-github-actions-templates/build@trunk
+        with:
+          name: 'gh-actions-docs'
+          checkout: 'false'
+          registry: 'ghcr'
+          docker-cache-tag: 'latest'
+          docker-additional-tags: ${{ env.VERSION_TAG }} # will be empty if not a push event
+          ghcr-omit-repository-name: 'true'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release, will fail if release already exists
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          gh release create \
+            '${{ env.VERSION_TAG }}' \
+            --generate-notes
+
+      - name: Override old major tag
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          git fetch --tags
+          git tag '${{ env.MAJOR_VERSION_TAG }}' '${{ env.VERSION_TAG }}' -f
+          git push --tags -f
+
+  test:
+    name: Test
+    runs-on: elvia-runner
+    needs: [build-release]
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run action
+      uses: ./
+      with:
+        ignore-files: 'your/cool/action.yml'
+        run-prettier: 'true'
+        no-name: 'true'
+        no-description: 'true'
+        no-toc: 'true'
+
+    - name: Output README for debugging
+      if: ${{ github.event_name == 'pull_request' }} # Only output README on PR
+      run: cat README.md
+
+    - name: Commit changes
+      if: ${{ github.event_name == 'push' }} # Only commit changes to README on push
+      run: |
+        if [[ -z "$(git status --porcelain)" ]]; then
+          echo "No changes to commit"
+          exit 0
+        fi
+
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+
+        git add README.md
+        git commit -m "Update action documentation"
+        git push

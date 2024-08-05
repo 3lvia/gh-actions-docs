@@ -17,4 +17,8 @@ COPY LICENSE README.md ./
 
 RUN cabal install --overwrite-policy=always
 
+# CVE-2024-32002
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git git-man
+
 ENTRYPOINT ["gh-actions-docs"]
