@@ -42,6 +42,8 @@ jobs:
           gh release create \
             '${{ env.VERSION_TAG }}' \
             --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Override old major tag
         if: ${{ github.event_name == 'push' }}
