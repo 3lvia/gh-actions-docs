@@ -18,14 +18,15 @@ import           Text.Pretty.Simple (pPrint)
 
 updateActions :: Config -> String -> IO String
 updateActions config readme = do
-    -- Parse action metadata
+    -- Parse action metadata from markdown file
     let actionMetadataListE = parse fromTextActionMetadataParser "" $ pack readme
     when (isLeft actionMetadataListE) do
-        putStrLn "Error parsing metadata:"
-        mapM_ pPrint actionMetadataListE
+        putStrLn $ "Error parsing action metadata from file '" ++ readmeFile config ++ "':"
+        pPrint actionMetadataListE
         exitFailure
 
-    let actionMetadataList = filter (\file -> path file `notElem` ignoreFiles config) $ fromRight [] actionMetadataListE
+    let actionMetadataList =
+            filter (\file -> path file `notElem` ignoreFiles config) $ fromRight [] actionMetadataListE
     when (debug config) do
         putStrLn "actionMetdataList:"
         pPrint actionMetadataList
