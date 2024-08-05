@@ -102,16 +102,13 @@ main = do
 
     readme <- readFile $ readmeFile config
 
-    case (noActions config, noToc config) of
-        (False, False) ->
+    case generateMode config of
+        GenerateBoth ->
             updateActions config readme >>= updateToc config >>= writeFile (readmeFile config)
-        (False, True) ->
+        GenerateActions ->
             updateActions config readme >>= writeFile (readmeFile config)
-        (True, False) ->
+        GenerateToc ->
             updateToc config readme >>= writeFile (readmeFile config)
-        (True, True) -> do
-            putStrLn "Both NO_TOC and NO_ACTIONS are set to true, nothing to do."
-            exitFailure
 
     when (runPrettier config) $
         callCommand ("prettier --write --single-quote " ++ readmeFile config)
