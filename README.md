@@ -2,11 +2,57 @@
 
 Automatically generate documentation for your GitHub Actions!
 
-# Usage
+# ⚡ Quickstart
 
-Run `gh-actions-docs` in the root of your repository to generate documentation for all your GitHub Actions.
-See [this section](#inputs) and onwards for an example of what the generated documentation looks like.
-The documentation will be added to the file `README.md` by default.
+**1.** Add the following to your `README.md` file:
+
+```markdown
+<!-- gh-actions-docs-start path=your/cool/action.yml owner=yourgithubaccount project=cool-action version=v1 -->
+<!-- gh-actions-docs-end -->
+```
+
+**Edit the `path` input to point to your action's `action.yml` file.**
+Optionally, you can also add the `owner`, `project` and `version` inputs to generate the "Usage" section.
+
+**2.** Use the `gh-actions-docs` action in your workflow:
+
+```yaml
+generate-docs:
+  name: Generate documentation
+  runs-on: ubuntu-latest
+  permissions:
+    contents: write
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Generate documentation
+      uses: 3lvia/gh-actions-docs@v1
+
+    - name: Commit changes
+      run: |
+        if [[ -z "$(git status --porcelain)" ]]; then
+          echo "No changes to commit"
+          exit 0
+        fi
+
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+
+        git add README.md
+        git commit -m "Update action documentation"
+        git push
+```
+
+# 📝 Examples of generated documentation
+
+- https://github.com/3lvia/core-github-actions-templates/blob/trunk/README.md
+- [This section of the `README.md`](#inputs) and onwards.
+
+# ✍️ Usage
+
+`gh-actions-docs` can be used as an executable or as a GitHub Action.
+The generated documentation will be added to the file `README.md` by default.
 To specify where in the file the documentation should be added, add the following two comments to your README file:
 
 ```markdown
@@ -152,7 +198,7 @@ gh-actions-docs
 See inputs above or [action.yml](action.yml) for all available environment variables when running using Docker or locally with Cabal.
 The environment variables use all-caps snake-case, e.g. `IGNORE_FILES` instead of `ignore-files`.
 
-# Development
+# 🧑‍💻 Development
 
 ## Releasing a new version
 
