@@ -16,8 +16,8 @@ import           Data.Void            (Void)
 import           Text.Megaparsec      (Parsec, anySingle, eof,
                                        errorBundlePretty, many, manyTill,
                                        manyTill_, optional, parse, sepBy,
-                                       skipManyTill, try, (<|>))
-import           Text.Megaparsec.Char (char, latin1Char, newline, string)
+                                       skipManyTill, try, (<|>), anySingle)
+import           Text.Megaparsec.Char (char, newline, string)
 
 type Parser = Parsec Void Text
 
@@ -189,7 +189,7 @@ permissionsToString permissions' =
 
 replaceActionTagWithDocs :: Config -> String -> (ActionMetadata, Action) -> String
 replaceActionTagWithDocs config readme (meta, action) =
-    case parse (skipManyTill latin1Char (specificActionMetadataParser_ meta)) "" (pack readme) of
+    case parse (skipManyTill anySingle (specificActionMetadataParser_ meta)) "" (pack readme) of
         Right "" ->
             readme
         Right match' ->
@@ -229,7 +229,7 @@ permissionParser = do
 
 fromTextActionMetadataParser :: Parser [ActionMetadata]
 fromTextActionMetadataParser = do
-    ps <- many $ try $ skipManyTill latin1Char actionMetadataParser
+    ps <- many $ try $ skipManyTill anySingle actionMetadataParser
     _ <- eof <|> void newline
     return ps
 

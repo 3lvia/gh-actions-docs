@@ -6,8 +6,8 @@ import           Data.Text            (Text, pack, replace, toLower, unpack)
 import           Data.Void            (Void)
 import           Text.Megaparsec      (Parsec, anySingle, errorBundlePretty,
                                        manyTill, manyTill_, parse, skipManyTill,
-                                       some)
-import           Text.Megaparsec.Char (char, latin1Char, newline, string)
+                                       some, anySingle)
+import           Text.Megaparsec.Char (char, newline, string)
 
 type Parser = Parsec Void Text
 
@@ -44,7 +44,7 @@ tocEndTag = "<!-- gh-actions-docs-toc-end -->"
 
 replaceTableOfContentsTagWithTableOfContents :: String -> String -> String
 replaceTableOfContentsTagWithTableOfContents toc readme =
-    case parse (skipManyTill latin1Char tableOfContentsTagParser) "" (pack readme) of
+    case parse (skipManyTill anySingle tableOfContentsTagParser) "" (pack readme) of
         Right match' ->
             let toc' = tocStartTag ++ "\n" ++ toc ++ tocEndTag
              in unpack $ replace (pack match') (pack toc') (pack readme)
@@ -56,7 +56,7 @@ markdownHeaderParser :: Parser MarkdownHeader
 markdownHeaderParser = do
     level' <- length <$> some (char '#')
     _ <- char ' '
-    text' <- latin1Char `manyTill` newline
+    text' <- anySingle `manyTill` newline
     return $ MarkdownHeader level' text'
 
 tableOfContentsTagParser :: Parser String
