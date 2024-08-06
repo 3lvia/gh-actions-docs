@@ -21,7 +21,9 @@ Automatically generate documentation for your GitHub Actions!
 ```
 
 **Edit the `path` input to point to your action's `action.yml` file.**
-Optionally, you can also add the `owner`, `project` and `version` inputs to generate the "Usage" section.
+
+Optionally, you can add the `owner`, `project` and `version` inputs to generate the "Usage" section.
+You can also add the `permissions` input to generate the "Permissions" section.
 
 **2.** Use the `gh-actions-docs` action in your workflow:
 
@@ -53,12 +55,12 @@ generate-docs:
         git push
 ```
 
-# 📝 Examples of generated documentation
+# 📝 Examples of Generated Documentation
 
 - https://github.com/3lvia/core-github-actions-templates/blob/trunk/README.md
 - [This section of the `README.md`](#inputs) and onwards.
 
-# ✍️ Usage
+# ✍️ Getting Started
 
 `gh-actions-docs` can be used as an executable or as a GitHub Action.
 The generated documentation will be added to the file `README.md` by default.
@@ -89,10 +91,11 @@ Add the following two comments to your README file to generate a table of conten
 <!-- gh-actions-docs-toc-end -->
 ```
 
-## GitHub Actions
+## GitHub Action
 
 `gh-actions-docs` is primarily intended to be used as a GitHub Action.
-The below documentation is actually generated from the `action.yml` file in this repository!
+The below documentation is actually generated from the `action.yml` file in this repository
+(with name, description and table of contents disabled).
 
 <!-- gh-actions-docs-start path=action.yml owner=3lvia project=gh-actions-docs version=v1 -->
 
@@ -180,7 +183,6 @@ The below documentation is actually generated from the `action.yml` file in this
     #
     # Required: no
 ```
-
 <!-- gh-actions-docs-end -->
 
 ## Docker
