@@ -183,6 +183,7 @@ The below documentation is actually generated from the `action.yml` file in this
     #
     # Required: no
 ```
+
 <!-- gh-actions-docs-end -->
 
 ## Docker
