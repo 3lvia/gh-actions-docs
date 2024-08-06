@@ -85,7 +85,7 @@ actionEndTag = "<!-- gh-actions-docs-end -->"
 prettyPrintAction :: Config -> Action -> ActionMetadata -> String
 prettyPrintAction config (Action name' description' inputs') actionMetadata =
     (if noName config then "" else "## " ++ name' ++ "\n\n") ++
-    (if noDescription config then "" else "### Description\n" ++ description' ++ "\n\n") ++
+    (if noDescription config then "" else description' ++ "\n\n") ++
     (if noInputs config then "" else prettyPrintInputs inputs') ++
     (if noPermissions config then "" else prettyPrintPermissions actionMetadata) ++
     (if noUsage config then "" else prettyPrintUsage name' inputs' actionMetadata)
