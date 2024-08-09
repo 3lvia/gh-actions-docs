@@ -4,13 +4,13 @@ Automatically generate pretty documentation for your GitHub Actions!
 
 # 🚀 Features
 
-- Generates documentation for the action name, description, inputs, permissions and usage.
-- Supports as many `action.yml` files as you want, generating documentation for each.
-- Extremely fast; parses eight `action.yml` files and generates documentation in ~40 milliseconds.
-- Supports the full GitHub Actions schema, including multiline strings.
-- Will optionally generate a table of contents for your markdown file.
-- Runs Prettier after generating the documentation, to ensure a consistent style (can be disabled).
-- Very customizable, see [inputs section](#inputs) for all available options.
+- **Generates pretty documentation** including the action name, description, inputs, [required permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/assigning-permissions-to-jobs) and a usage example.
+- Supports **as many `action.yml` files as you want**, generating documentation for each.
+- **Extremely fast**; in testing, parses eight `action.yml` files and generates their documentation in **~40 milliseconds**.
+- Supports the **full GitHub Actions schema**, including multiline strings.
+- Will optionally **generate a table of contents** for your markdown file.
+- Runs Prettier after generating the documentation, to ensure **a consistent style** (can be disabled).
+- **Very customizable**; see [inputs section](#inputs) for all available options.
 
 # ⚡ Quickstart
 
