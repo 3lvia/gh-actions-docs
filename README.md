@@ -102,20 +102,20 @@ The below documentation is actually generated from the `action.yml` file in this
 
 ### Inputs
 
-| Name             | Description                                                                                 | Required | Default     |
-| ---------------- | ------------------------------------------------------------------------------------------- | -------- | ----------- |
-| `debug`          | Set to `true` to enable debug output.                                                       | no       |             |
-| `ignore-files`   | Comma-separated list of `actions.yml`-files to ignore when generating action documentation. | no       |             |
-| `ignore-headers` | Comma-separated list of headers to ignore when generating a table of contents.              | no       |             |
-| `no-actions`     | Set to `true` to disable generation of actions documentation.                               | no       |             |
-| `no-description` | Set to `true` to disable generation of the action description.                              | no       |             |
-| `no-inputs`      | Set to `true` to disable generation of the action inputs.                                   | no       |             |
-| `no-name`        | Set to `true` to disable generation of the action name.                                     | no       |             |
-| `no-permissions` | Set to `true` to disable generation of the action permissions.                              | no       |             |
-| `no-toc`         | Set to `true` to disable generation of a table of contents.                                 | no       |             |
-| `no-usage`       | Set to `true` to disable generation of the action usage.                                    | no       |             |
-| `readme-file`    | The file to write the documentation to.                                                     | no       | `README.md` |
-| `run-prettier`   | Set to `true` to run Prettier on the generated documentation.                               | no       |             |
+| Name             | Description                                                                                                                                                                                  | Required | Default     |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| `debug`          | Set to `true` to enable debug output.                                                                                                                                                        | no       | `false`     |
+| `ignore-files`   | Comma-separated list of `actions.yml`-files to ignore when generating action documentation.                                                                                                  | no       |             |
+| `ignore-headers` | Comma-separated list of headers to ignore when generating a table of contents. Should include the `#`-prefixes, e.g. `## My Header` or `### My Other Header`.                                | no       |             |
+| `no-actions`     | Set to `true` to disable generation of any actions documentation. Useful when you only want to generate a table of contents. This cannot be set to `true` if `no-toc` is also set to `true`. | no       | `false`     |
+| `no-description` | Set to `true` to disable generation of the action description.                                                                                                                               | no       | `false`     |
+| `no-inputs`      | Set to `true` to disable generation of the action inputs.                                                                                                                                    | no       | `false`     |
+| `no-name`        | Set to `true` to disable generation of the action name.                                                                                                                                      | no       | `false`     |
+| `no-permissions` | Set to `true` to disable generation of the action permissions.                                                                                                                               | no       | `false`     |
+| `no-toc`         | Set to `true` to disable generation of a table of contents. Useful when you only want to generate actions documentation. This cannot be set to `true` if `no-actions` is also set to `true`. | no       | `false`     |
+| `no-usage`       | Set to `true` to disable generation of the usage example.                                                                                                                                    | no       | `false`     |
+| `readme-file`    | The file to read the action tags from and write the documentation to.                                                                                                                        | no       | `README.md` |
+| `run-prettier`   | Set to `true` to run Prettier on the generated documentation.                                                                                                                                | no       | `false`     |
 
 ### Usage
 
@@ -127,6 +127,7 @@ The below documentation is actually generated from the `action.yml` file in this
     # Set to `true` to enable debug output.
     #
     # Required: no
+    # Default: 'false'
 
     ignore-files:
     # Comma-separated list of `actions.yml`-files to ignore when generating action documentation.
@@ -134,47 +135,54 @@ The below documentation is actually generated from the `action.yml` file in this
     # Required: no
 
     ignore-headers:
-    # Comma-separated list of headers to ignore when generating a table of contents.
+    # Comma-separated list of headers to ignore when generating a table of contents. Should include the `#`-prefixes, e.g. `## My Header` or `### My Other Header`.
     #
     # Required: no
 
     no-actions:
-    # Set to `true` to disable generation of actions documentation.
+    # Set to `true` to disable generation of any actions documentation. Useful when you only want to generate a table of contents. This cannot be set to `true` if `no-toc` is also set to `true`.
     #
     # Required: no
+    # Default: 'false'
 
     no-description:
     # Set to `true` to disable generation of the action description.
     #
     # Required: no
+    # Default: 'false'
 
     no-inputs:
     # Set to `true` to disable generation of the action inputs.
     #
     # Required: no
+    # Default: 'false'
 
     no-name:
     # Set to `true` to disable generation of the action name.
     #
     # Required: no
+    # Default: 'false'
 
     no-permissions:
     # Set to `true` to disable generation of the action permissions.
     #
     # Required: no
+    # Default: 'false'
 
     no-toc:
-    # Set to `true` to disable generation of a table of contents.
+    # Set to `true` to disable generation of a table of contents. Useful when you only want to generate actions documentation. This cannot be set to `true` if `no-actions` is also set to `true`.
     #
     # Required: no
+    # Default: 'false'
 
     no-usage:
-    # Set to `true` to disable generation of the action usage.
+    # Set to `true` to disable generation of the usage example.
     #
     # Required: no
+    # Default: 'false'
 
     readme-file:
-    # The file to write the documentation to.
+    # The file to read the action tags from and write the documentation to.
     #
     # Required: no
     # Default: 'README.md'
@@ -183,6 +191,7 @@ The below documentation is actually generated from the `action.yml` file in this
     # Set to `true` to run Prettier on the generated documentation.
     #
     # Required: no
+    # Default: 'false'
 ```
 
 <!-- gh-actions-docs-end -->
