@@ -9,7 +9,7 @@ Automatically generate pretty documentation for your GitHub Actions!
 - **Extremely fast**; in testing, parses eight `action.yml` files and generates their documentation in **~40 milliseconds**.
 - Supports the **full GitHub Actions schema**, including multiline strings.
 - Will optionally **generate a table of contents** for your markdown file.
-- Runs Prettier after generating the documentation, to ensure **a consistent style** (can be disabled).
+- Runs [Prettier](https://prettier.io) after generating the documentation to ensure **a consistent style** (can be disabled).
 - **Very customizable**; see [inputs section](#inputs) for all available options.
 
 # ⚡ Quickstart
