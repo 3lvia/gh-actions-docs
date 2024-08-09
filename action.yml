@@ -1,5 +1,5 @@
 name: 'gh-actions-docs'
-description: 'Automatically generate documentation for your GitHub Actions!'
+description: 'Automatically generate pretty documentation for your GitHub Actions!'
 inputs:
   readme-file:
     description: 'The file to write the documentation to.'

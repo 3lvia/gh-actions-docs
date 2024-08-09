@@ -18,7 +18,7 @@ name:               gh-actions-docs
 version:            1.0.4
 
 -- A short (one-line) description of the package.
-synopsis:           Automatically generate documentation for your GitHub Actions!
+synopsis:           Automatically generate pretty documentation for your GitHub Actions!
 
 -- A longer description of the package.
 -- description:

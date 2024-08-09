@@ -1,15 +1,16 @@
 # gh-actions-docs
 
-Automatically generate documentation for your GitHub Actions!
+Automatically generate pretty documentation for your GitHub Actions!
 
 # 🚀 Features
 
 - Generates documentation for the action name, description, inputs, permissions and usage.
-- Supports multiple `action.yml` files.
+- Supports as many `action.yml` files as you want, generating documentation for each.
+- Extremely fast; parses eight `action.yml` files and generates documentation in ~40 milliseconds.
 - Supports the full GitHub Actions schema, including multiline strings.
-- Optionally generates a table of contents for your markdown file.
+- Will optionally generate a table of contents for your markdown file.
 - Runs Prettier after generating the documentation, to ensure a consistent style (can be disabled).
-- Very customizable, with many options to e.g. disable parts of the documentation.
+- Very customizable, see [inputs section](#inputs) for all available options.
 
 # ⚡ Quickstart
 
