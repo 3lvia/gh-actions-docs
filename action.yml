@@ -1,4 +1,5 @@
 name: 'gh-actions-docs'
+author: '3lvia'
 description: 'Automatically generate pretty documentation for your GitHub Actions!'
 inputs:
   readme-file:
@@ -36,23 +37,27 @@ inputs:
     required: false
     default: 'false'
   no-name:
-    description: 'Set to `true` to disable generation of the action name.'
+    description: 'Set to `true` to disable generation of action names.'
     required: false
     default: 'false'
   no-description:
-    description: 'Set to `true` to disable generation of the action description.'
+    description: 'Set to `true` to disable generation of action descriptions.'
     required: false
     default: 'false'
   no-inputs:
-    description: 'Set to `true` to disable generation of the action inputs.'
+    description: 'Set to `true` to disable generation of action inputs.'
+    required: false
+    default: 'false'
+  no-outputs:
+    description: 'Set to `true` to disable generation of action outputs.'
     required: false
     default: 'false'
   no-permissions:
-    description: 'Set to `true` to disable generation of the action permissions.'
+    description: 'Set to `true` to disable generation of action permissions.'
     required: false
     default: 'false'
   no-usage:
-    description: 'Set to `true` to disable generation of the usage example.'
+    description: 'Set to `true` to disable generation of usage examples.'
     required: false
     default: 'false'
 

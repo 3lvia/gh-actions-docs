@@ -41,6 +41,7 @@ data Config
     , noName        :: Bool
     , noDescription :: Bool
     , noInputs      :: Bool
+    , noOutputs     :: Bool
     , noPermissions :: Bool
     , noUsage       :: Bool
     }
@@ -59,6 +60,7 @@ getConfig = do
     let noName'        = lookup "NO_NAME" env == Just "true"
     let noDescription' = lookup "NO_DESCRIPTION" env == Just "true"
     let noInputs'      = lookup "NO_INPUTS" env == Just "true"
+    let noOutputs'     = lookup "NO_OUTPUTS" env == Just "true"
     let noPermissions' = lookup "NO_PERMISSIONS" env == Just "true"
     let noUsage'       = lookup "NO_USAGE" env == Just "true"
 
@@ -73,5 +75,6 @@ getConfig = do
                 noName'
                 noDescription'
                 noInputs'
+                noOutputs'
                 noPermissions'
                 noUsage'

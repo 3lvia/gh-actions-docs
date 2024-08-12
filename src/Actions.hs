@@ -33,11 +33,22 @@ $(deriveJSON defaultOptions{omitNothingFields = True, fieldLabelModifier = filte
 
 type Inputs = Map String ActionInput
 
+newtype ActionOutput
+    = ActionOutput
+    { description :: String }
+    deriving (Show)
+
+$(deriveJSON defaultOptions{omitNothingFields = True, fieldLabelModifier = filter (/= '\'')} ''ActionOutput)
+
+type Outputs = Map String ActionOutput
+
 data Action
     = Action
     { name        :: String
+    , author      :: Maybe String -- TODO: use this for something
     , description :: String
     , inputs      :: Maybe Inputs
+    , outputs     :: Maybe Outputs
     }
     deriving (Show)
 
@@ -83,12 +94,29 @@ actionEndTag :: String
 actionEndTag = "<!-- gh-actions-docs-end -->"
 
 prettyPrintAction :: Config -> Action -> ActionMetadata -> String
-prettyPrintAction config (Action name' description' inputs') actionMetadata =
+prettyPrintAction config (Action name' _ description' inputs' outputs') actionMetadata =
     (if noName config then "" else "## " ++ name' ++ "\n\n") ++
     (if noDescription config then "" else description' ++ "\n\n") ++
     (if noInputs config then "" else prettyPrintInputs inputs') ++
+    (if noOutputs config then "" else prettyPrintOutputs outputs') ++
     (if noPermissions config then "" else prettyPrintPermissions actionMetadata) ++
     (if noUsage config then "" else prettyPrintUsage name' inputs' actionMetadata)
+
+prettyPrintOutputs :: Maybe Outputs -> String
+prettyPrintOutputs (Just outputs') =
+    "### Outputs\n" ++
+    "|Name|Description|\n"
+        ++ "|-|-|\n"
+        ++ concatMap
+            ( \(name', ActionOutput des) ->
+                "`" ++ name' ++ "`"
+                    ++ "|"
+                    ++ replaceNewlinesWithSpaces des
+                    ++ "|\n"
+            )
+            (toList outputs')
+        ++ "\n"
+prettyPrintOutputs _ = ""
 
 prettyPrintInputs :: Maybe Inputs -> String
 prettyPrintInputs (Just inputs') =
