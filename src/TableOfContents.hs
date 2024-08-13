@@ -6,7 +6,7 @@ import           Data.Text            (Text, pack, replace, toLower, unpack)
 import           Data.Void            (Void)
 import           Text.Megaparsec      (Parsec, anySingle, errorBundlePretty,
                                        manyTill, manyTill_, parse, skipManyTill,
-                                       some, anySingle)
+                                       some)
 import           Text.Megaparsec.Char (char, newline, string)
 
 type Parser = Parsec Void Text
