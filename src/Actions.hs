@@ -16,16 +16,17 @@ import           Data.Void            (Void)
 import           Text.Megaparsec      (Parsec, anySingle, eof,
                                        errorBundlePretty, many, manyTill,
                                        manyTill_, optional, parse, sepBy,
-                                       skipManyTill, try, (<|>), anySingle)
+                                       skipManyTill, try, (<|>))
 import           Text.Megaparsec.Char (char, newline, string)
 
 type Parser = Parsec Void Text
 
 data ActionInput
     = ActionInput
-    { description :: Maybe String
-    , required    :: Maybe Bool
-    , default'    :: Maybe String
+    { description        :: Maybe String
+    , required           :: Maybe Bool
+    , default'           :: Maybe String
+    , deprecationMessage :: Maybe String
     }
     deriving (Show)
 
@@ -124,14 +125,15 @@ prettyPrintInputs (Just inputs') =
     "|Name|Description|Required|Default|\n"
         ++ "|-|-|-|-|\n"
         ++ concatMap
-            ( \(name', ActionInput des req def) ->
-                "`" ++ name' ++ "`"
+            ( \(name', ActionInput description' required' default_ deprecationMessage') ->
+                    "`" ++ name' ++ "`"
                     ++ "|"
-                    ++ maybe "" replaceNewlinesWithSpaces des
+                    ++ maybe "" ((":warning: **DEPRECATED**: _" ++) . replaceNewlinesWithSpaces . (++ "_ :warning:<br>")) deprecationMessage'
+                    ++ maybe "" replaceNewlinesWithSpaces description'
                     ++ "|"
-                    ++ maybe "no" toEnglishBool req
+                    ++ maybe "no" toEnglishBool required'
                     ++ "|"
-                    ++ maybe "" (\def' -> "`" ++ def' ++ "`") def
+                    ++ maybe "" (\def' -> "`" ++ def' ++ "`") default_
                     ++ "|\n"
             )
             (toList inputs')
@@ -167,15 +169,16 @@ prettyPrintUsage name' inputs' (ActionMetadata path' (Just owner') (Just project
 prettyPrintUsage _ _ _ = ""
 
 prettyPrintUsageWith :: Maybe Inputs -> String
-prettyPrintUsageWith (Just inputs') = "  with:\n" ++ concatMap (uncurry prettyPrintUsageInputs) (toList inputs')
+prettyPrintUsageWith (Just inputs') = "  with:\n" ++ concatMap (uncurry prettyPrintUsageInput) (toList inputs')
 prettyPrintUsageWith Nothing = ""
 
-prettyPrintUsageInputs :: String -> ActionInput -> String
-prettyPrintUsageInputs name' (ActionInput des req def) =
+prettyPrintUsageInput :: String -> ActionInput -> String
+prettyPrintUsageInput _ (ActionInput _ _ _ (Just _)) = ""
+prettyPrintUsageInput name' (ActionInput description' required' default_ Nothing) =
     indent
         ++ name'
         ++ ":\n"
-        ++ ( case (des, req, def) of
+        ++ ( case (description', required', default_) of
                 (Just des', Just req', Just def') ->
                     formatDescription des' ++ formatRequired req' ++ formatDefault def'
                 (Just des', Just req', _) ->
