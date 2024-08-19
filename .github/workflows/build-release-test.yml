@@ -31,6 +31,7 @@ jobs:
           name: 'gh-actions-docs'
           checkout: 'false'
           registry: 'ghcr'
+          project-file: 'Dockerfile'
           docker-cache-tag: ${{ github.event_name == 'push' && 'latest' || 'latest-cache' }}
           docker-additional-tags: ${{ env.VERSION_TAG }}
           ghcr-omit-repository-name: 'true'
