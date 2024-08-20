@@ -144,7 +144,7 @@ prettyPrintDeprecationMessage :: Maybe String -> String
 prettyPrintDeprecationMessage (Just deprecationMessage') =
     ":warning: **DEPRECATED**: _"
         ++ replaceNewlinesWithSpaces deprecationMessage'
-        ++ "_ :warning:\n"
+        ++ "_ :warning:<br><br>"
 prettyPrintDeprecationMessage Nothing = ""
 
 prettyPrintPermissions :: ActionMetadata -> String
