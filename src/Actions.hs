@@ -11,7 +11,7 @@ import           Data.Aeson.TH        (defaultOptions, deriveJSON,
 import           Data.List            (intercalate)
 import           Data.List.Split      (splitOn)
 import           Data.Map             (Map, fromList, toList)
-import           Data.Text            (Text, pack, replace, unpack)
+import           Data.Text            (Text, pack, replace, strip, unpack)
 import           Data.Void            (Void)
 import           Text.Megaparsec      (Parsec, anySingle, eof,
                                        errorBundlePretty, many, manyTill,
@@ -86,7 +86,7 @@ toEnglishBool True  = "yes"
 toEnglishBool False = "no"
 
 replaceNewlinesWithSpaces :: String -> String
-replaceNewlinesWithSpaces = unpack . replace "\n" " " . pack
+replaceNewlinesWithSpaces = unpack . strip . replace "\n" " " . pack
 
 actionStartTagPrefix :: String
 actionStartTagPrefix = "<!-- gh-actions-docs-start"
@@ -128,7 +128,7 @@ prettyPrintInputs (Just inputs') =
             ( \(name', ActionInput description' required' default_ deprecationMessage') ->
                     "`" ++ name' ++ "`"
                     ++ "|"
-                    ++ maybe "" ((":warning: **DEPRECATED**: _" ++) . replaceNewlinesWithSpaces . (++ "_ :warning:<br>")) deprecationMessage'
+                    ++ prettyPrintDeprecationMessage deprecationMessage'
                     ++ maybe "" replaceNewlinesWithSpaces description'
                     ++ "|"
                     ++ maybe "no" toEnglishBool required'
@@ -139,6 +139,13 @@ prettyPrintInputs (Just inputs') =
             (toList inputs')
         ++ "\n"
 prettyPrintInputs _ = ""
+
+prettyPrintDeprecationMessage :: Maybe String -> String
+prettyPrintDeprecationMessage (Just deprecationMessage') =
+    ":warning: **DEPRECATED**: _"
+        ++ replaceNewlinesWithSpaces deprecationMessage'
+        ++ "_ :warning:\n"
+prettyPrintDeprecationMessage Nothing = ""
 
 prettyPrintPermissions :: ActionMetadata -> String
 prettyPrintPermissions (ActionMetadata _ _ _ _ (Just permissions')) =
