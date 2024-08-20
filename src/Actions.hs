@@ -103,21 +103,6 @@ prettyPrintAction config (Action name' _ description' inputs' outputs') actionMe
     (if noPermissions config then "" else prettyPrintPermissions actionMetadata) ++
     (if noUsage config then "" else prettyPrintUsage name' inputs' actionMetadata)
 
-prettyPrintOutputs :: Maybe Outputs -> String
-prettyPrintOutputs (Just outputs') =
-    "### Outputs\n" ++
-    "|Name|Description|\n"
-        ++ "|-|-|\n"
-        ++ concatMap
-            ( \(name', ActionOutput des) ->
-                "`" ++ name' ++ "`"
-                    ++ "|"
-                    ++ replaceNewlinesWithSpaces des
-                    ++ "|\n"
-            )
-            (toList outputs')
-        ++ "\n"
-prettyPrintOutputs _ = ""
 
 prettyPrintInputs :: Maybe Inputs -> String
 prettyPrintInputs (Just inputs') =
@@ -146,6 +131,22 @@ prettyPrintDeprecationMessage (Just deprecationMessage') =
         ++ replaceNewlinesWithSpaces deprecationMessage'
         ++ "_ :warning:<br><br>"
 prettyPrintDeprecationMessage Nothing = ""
+
+prettyPrintOutputs :: Maybe Outputs -> String
+prettyPrintOutputs (Just outputs') =
+    "### Outputs\n" ++
+    "|Name|Description|\n"
+        ++ "|-|-|\n"
+        ++ concatMap
+            ( \(name', ActionOutput des) ->
+                "`" ++ name' ++ "`"
+                    ++ "|"
+                    ++ replaceNewlinesWithSpaces des
+                    ++ "|\n"
+            )
+            (toList outputs')
+        ++ "\n"
+prettyPrintOutputs _ = ""
 
 prettyPrintPermissions :: ActionMetadata -> String
 prettyPrintPermissions (ActionMetadata _ _ _ _ (Just permissions')) =

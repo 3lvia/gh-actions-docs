@@ -1,4 +1,4 @@
-FROM haskell:9.4.8-slim
+FROM haskell:9.6-slim-bullseye
 
 WORKDIR /opt/app
 
@@ -17,8 +17,15 @@ COPY LICENSE README.md ./
 
 RUN cabal install --overwrite-policy=always
 
-# CVE-2024-32002
+# Fixes CVEs
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git git-man
+    apt-get install --no-install-recommends -y \
+      e2fsprogs \
+      libcom-err2 \
+      libsqlite3-0 \
+      libss2 \
+      logsave \
+      libnghttp2-14 \
+      linux-libc-dev
 
 ENTRYPOINT ["gh-actions-docs"]
