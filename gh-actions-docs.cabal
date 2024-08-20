@@ -15,7 +15,7 @@ name:               gh-actions-docs
 
 -- The package version.
 -- NOTE: to update version, change this AND version in action.yml!
-version:            1.2.1
+version:            1.2.2
 
 -- A short (one-line) description of the package.
 synopsis:           Automatically generate pretty documentation for your GitHub Actions!
