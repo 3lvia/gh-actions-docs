@@ -151,13 +151,13 @@ prettyPrintOutputs _ = ""
 prettyPrintPermissions :: ActionMetadata -> String
 prettyPrintPermissions (ActionMetadata _ _ _ _ (Just permissions')) =
     "### Permissions\n"
-    ++ "This action requires the following [permissions](https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs):\n"
+    ++ "This action requires the following base [permissions](https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs):\n"
     ++ concatMap
             ( \(name', access) ->
                 "- `" ++ name' ++ ": " ++ show access ++ "`\n"
             )
             (toList permissions')
-    ++ "\n"
+    ++ "\nMore permissions might be required depending on the inputs set, see the actions documentation for more information.\n"
 prettyPrintPermissions _ = ""
 
 
