@@ -8,13 +8,19 @@ on:
     branches: [trunk]
     paths-ignore: ['README.md']
 
+concurrency:
+  group: '${{ github.workflow }}-${{ github.ref }}'
+
 jobs:
   build-release:
     name: Build and release
     runs-on: elvia-runner
     permissions:
+      actions: read
       contents: write
       packages: write
+      pull-requests: write
+      security-events: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,13 +35,15 @@ jobs:
         uses: 3lvia/core-github-actions-templates/build@trunk
         with:
           name: 'gh-actions-docs'
+          namespace: 'core'
+          project-file: 'Dockerfile'
+          trivy-post-comment: 'true'
+          trivy-upload-report: 'true'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN'
           checkout: 'false'
           registry: 'ghcr'
-          project-file: 'Dockerfile'
           docker-cache-tag: ${{ github.event_name == 'push' && 'latest' || 'latest-cache' }}
           docker-additional-tags: ${{ env.VERSION_TAG }}
-          ghcr-omit-repository-name: 'true'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release if new version
         if: ${{ github.event_name == 'push' }}

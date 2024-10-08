@@ -208,7 +208,7 @@ The below documentation is actually generated from the `action.yml` file in this
 You can run `gh-actions-docs` using locally using Docker:
 
 ```bash
-docker run -v "$(pwd):/opt/app" ghcr.io/3lvia/gh-actions-docs:latest
+docker run -v "$(pwd):/opt/app" ghcr.io/3lvia/core/gh-actions-docs:latest
 ```
 
 ## Local

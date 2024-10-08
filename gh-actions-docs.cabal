@@ -65,7 +65,7 @@ executable gh-actions-docs
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.17.2.0
+    build-depends:    base ^>=4.18.2.1
                     , yaml
                     , aeson
                     , split
