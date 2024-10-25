@@ -26,6 +26,11 @@ RUN apt-get update && \
       libss2 \
       logsave \
       libnghttp2-14 \
-      linux-libc-dev
+      linux-libc-dev \
+      libperl5.32 \
+      libsepol1 \
+      perl \
+      perl-base \
+      perl-modules-5.32
 
 ENTRYPOINT ["gh-actions-docs"]
