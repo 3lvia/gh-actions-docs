@@ -41,7 +41,7 @@ jobs:
           trivy-upload-report: 'true'
           severity: 'CRITICAL,HIGH,MEDIUM,LOW,UNKNOWN'
           checkout: 'false'
-          registry: 'ghcr'
+          registry: 'ghcr.io/3lvia'
           docker-additional-tags: ${{ github.event_name == 'push' && format('latest,{0}', env.VERSION_TAG) || env.VERSION_TAG }}
 
       - name: Create release if new version
