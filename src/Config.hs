@@ -1,5 +1,3 @@
-{-# LANGUAGE BlockArguments #-}
-
 module Config where
 
 import           Data.List.Split    (splitOn)
@@ -47,6 +45,9 @@ data Config
     }
     deriving (Show)
 
+
+-- Reads environment variables and returns a Config record.
+
 getConfig :: IO Config
 getConfig = do
     env <- getEnvironment
@@ -63,7 +64,6 @@ getConfig = do
     let noOutputs'     = lookup "NO_OUTPUTS" env == Just "true"
     let noPermissions' = lookup "NO_PERMISSIONS" env == Just "true"
     let noUsage'       = lookup "NO_USAGE" env == Just "true"
-
 
     return $ Config
                 readmeFile'

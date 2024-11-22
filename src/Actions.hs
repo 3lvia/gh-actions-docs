@@ -2,6 +2,16 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE TemplateHaskell       #-}
 
+-- This module contains the data types and functions for parsing action.yml files and "metadata tags" in README.md files.
+-- The metadata tags are used to specify the path to the action.yml file, the owner, project, version, and permissions required for the action.
+-- Between these metadata tags, the documentation generated from their corresponding action.yml is inserted.
+--
+-- The Action type represents all the fields in an action.yml file.
+-- All types related to this type will be prefixed with `Action`.
+--
+-- The ActionMetadata type represents the metadata tag in a README.md file.
+-- All types related to this type will be prefixed with `ActionMetadata`.
+
 module Actions where
 
 import           Config
@@ -32,7 +42,7 @@ data ActionInput
 
 $(deriveJSON defaultOptions{omitNothingFields = True, fieldLabelModifier = filter (/= '\'')} ''ActionInput)
 
-type Inputs = Map String ActionInput
+type ActionInputs = Map String ActionInput
 
 newtype ActionOutput
     = ActionOutput
@@ -41,35 +51,41 @@ newtype ActionOutput
 
 $(deriveJSON defaultOptions{omitNothingFields = True, fieldLabelModifier = filter (/= '\'')} ''ActionOutput)
 
-type Outputs = Map String ActionOutput
+type ActionOutputs = Map String ActionOutput
+
+
+-- This is the root node of an actions 'action.yml' file.
 
 data Action
     = Action
     { name        :: String
     , author      :: Maybe String -- TODO: use this for something
     , description :: String
-    , inputs      :: Maybe Inputs
-    , outputs     :: Maybe Outputs
+    , inputs      :: Maybe ActionInputs
+    , outputs     :: Maybe ActionOutputs
     }
     deriving (Show)
 
 $(deriveJSON defaultOptions{omitNothingFields = True, fieldLabelModifier = filter (/= '\'')} ''Action)
 
-data ActionPermissionAccess
+data ActionMetadataPermissionAccess
     = ReadAccess
     | WriteAccess
     deriving Eq
 
-instance Read ActionPermissionAccess where
+instance Read ActionMetadataPermissionAccess where
     readsPrec _ "read"  = [(ReadAccess, "")]
     readsPrec _ "write" = [(WriteAccess, "")]
     readsPrec _ _       = []
 
-instance Show ActionPermissionAccess where
+instance Show ActionMetadataPermissionAccess where
     show ReadAccess  = "read"
     show WriteAccess = "write"
 
-type Permissions = Map String ActionPermissionAccess
+type ActionMetadataPermissions = Map String ActionMetadataPermissionAccess
+
+
+-- This is the metadata taken from the tag in the README.md file.
 
 data ActionMetadata
     = ActionMetadata
@@ -77,7 +93,7 @@ data ActionMetadata
     , owner       :: Maybe String
     , project     :: Maybe String
     , version     :: Maybe String
-    , permissions :: Maybe Permissions
+    , permissions :: Maybe ActionMetadataPermissions
     }
     deriving (Show, Eq)
 
@@ -104,7 +120,7 @@ prettyPrintAction config (Action name' _ description' inputs' outputs') actionMe
     (if noUsage config then "" else prettyPrintUsage name' inputs' actionMetadata)
 
 
-prettyPrintInputs :: Maybe Inputs -> String
+prettyPrintInputs :: Maybe ActionInputs -> String
 prettyPrintInputs (Just inputs') =
     "### Inputs\n" ++
     "|Name|Description|Required|Default|\n"
@@ -132,7 +148,7 @@ prettyPrintDeprecationMessage (Just deprecationMessage') =
         ++ "_ :warning:<br><br>"
 prettyPrintDeprecationMessage Nothing = ""
 
-prettyPrintOutputs :: Maybe Outputs -> String
+prettyPrintOutputs :: Maybe ActionOutputs -> String
 prettyPrintOutputs (Just outputs') =
     "### Outputs\n" ++
     "|Name|Description|\n"
@@ -161,7 +177,7 @@ prettyPrintPermissions (ActionMetadata _ _ _ _ (Just permissions')) =
 prettyPrintPermissions _ = ""
 
 
-prettyPrintUsage :: String -> Maybe Inputs -> ActionMetadata -> String
+prettyPrintUsage :: String -> Maybe ActionInputs -> ActionMetadata -> String
 prettyPrintUsage name' inputs' (ActionMetadata path' (Just owner') (Just project') (Just version') _) =
     "### Usage\n"++
     "```yaml\n"
@@ -176,7 +192,7 @@ prettyPrintUsage name' inputs' (ActionMetadata path' (Just owner') (Just project
         prependSlashIfNotEmpty x  = "/" ++ x
 prettyPrintUsage _ _ _ = ""
 
-prettyPrintUsageWith :: Maybe Inputs -> String
+prettyPrintUsageWith :: Maybe ActionInputs -> String
 prettyPrintUsageWith (Just inputs') = "  with:\n" ++ concatMap (uncurry prettyPrintUsageInput) (toList inputs')
 prettyPrintUsageWith Nothing = ""
 
@@ -216,7 +232,7 @@ actionMetadataToString (ActionMetadata path' owner' project' version' permission
         ++ maybe "" permissionsToString permissions'
         ++ " -->"
 
-permissionsToString :: Permissions -> String
+permissionsToString :: ActionMetadataPermissions -> String
 permissionsToString permissions' =
     " permissions="
     ++ intercalate "," permissionStrList
@@ -260,7 +276,7 @@ actionMetadataParser = do
     _ <- skipManyTill anySingle $ string $ pack actionEndTag
     return $ ActionMetadata path' owner' project' version' (fromList <$> permissions')
 
-permissionParser :: Parser (String, ActionPermissionAccess)
+permissionParser :: Parser (String, ActionMetadataPermissionAccess)
 permissionParser = do
     name' <- manyTill anySingle (char ':')
     access' <- read . unpack <$> (string "read" <|> string "write")

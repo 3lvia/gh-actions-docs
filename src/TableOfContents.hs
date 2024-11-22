@@ -1,5 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- This module contains functions to parse Markdown headers and generate a table of contents.
+-- The table of contents is inserted into the README.md file between the tags defined in tocStartTag and tocEndTag.
+
 module TableOfContents where
 
 import           Data.Text            (Text, pack, replace, toLower, unpack)
@@ -50,7 +53,6 @@ replaceTableOfContentsTagWithTableOfContents toc readme =
              in unpack $ replace (pack match') (pack toc') (pack readme)
         Left err ->
             error $ errorBundlePretty err
-
 
 markdownHeaderParser :: Parser MarkdownHeader
 markdownHeaderParser = do
