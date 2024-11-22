@@ -1,5 +1,4 @@
 {-# LANGUAGE BlockArguments        #-}
-{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
 module Main where
@@ -18,7 +17,7 @@ import           Text.Pretty.Simple (pPrint)
 
 updateActions :: Config -> String -> IO String
 updateActions config readme = do
-    -- Parse action metadata from markdown file
+    -- Parse action metadata from tags in README
     let actionMetadataListE = parse fromTextActionMetadataParser "" $ pack readme
     when (isLeft actionMetadataListE) do
         putStrLn $ "Error parsing action metadata from file '" ++ readmeFile config ++ "':"
@@ -31,7 +30,7 @@ updateActions config readme = do
         putStrLn "actionMetdataList:"
         pPrint actionMetadataList
 
-    -- Parse yaml in action files
+    -- Parse YAML of the action files defined by action metadata
     parsedFilesE <- mapM (decodeFileEither . path) actionMetadataList :: IO [Either ParseException Action]
     when (any isLeft parsedFilesE) do
         putStrLn "Error parsing files:"
