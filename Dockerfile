@@ -10,7 +10,7 @@ RUN cabal build --only-dependencies
 COPY src ./src
 COPY LICENSE README.md ./
 
-RUN cabal install --overwrite-policy=always
+RUN cabal install --overwrite-policy=always --installdir=/root/.cabal/bin gh-actions-docs
 
 
 FROM haskell:9.12.2-slim-bookworm
