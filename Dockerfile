@@ -1,4 +1,4 @@
-FROM haskell:9.12.2-slim-bookworm AS build
+FROM haskell:9.12.2-slim-bookworm
 
 WORKDIR /app
 
@@ -16,6 +16,7 @@ COPY src ./src
 COPY LICENSE README.md ./
 
 RUN cabal install --overwrite-policy=always
+RUN export PATH=$PATH:/root/.cabal/bin
 
 # Fixes CVEs
 RUN apt-get update && \
