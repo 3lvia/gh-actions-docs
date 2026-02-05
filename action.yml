@@ -64,7 +64,6 @@ inputs:
 runs:
   using: 'docker'
   image: 'docker://ghcr.io/3lvia/core/gh-actions-docs:v1.2.4' # to update version, change this AND version in gh-actions-docs.cabal!
-  entrypoint: '/usr/local/bin/gh-actions-docs'
   env:
     README_FILE: ${{ inputs.readme-file }}
     DEBUG: ${{ inputs.debug }}
