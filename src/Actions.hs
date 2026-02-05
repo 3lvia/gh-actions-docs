@@ -120,6 +120,9 @@ prettyPrintAction config (Action name' _ description' inputs' outputs') actionMe
     (if noUsage config then "" else prettyPrintUsage name' inputs' actionMetadata)
 
 
+escapePipe :: Maybe String -> Maybe String
+escapePipe = fmap (unpack . replace "|" "\\|" . pack)
+
 prettyPrintInputs :: Maybe ActionInputs -> String
 prettyPrintInputs (Just inputs') =
     "### Inputs\n" ++
@@ -134,7 +137,7 @@ prettyPrintInputs (Just inputs') =
                     ++ "|"
                     ++ maybe "no" toEnglishBool required'
                     ++ "|"
-                    ++ maybe "" (\def' -> "`" ++ def' ++ "`") default_
+                    ++ maybe "" (\def' -> "`" ++ def' ++ "`") (escapePipe default_)
                     ++ "|\n"
             )
             (toList inputs')
