@@ -32,4 +32,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
 RUN npm install -g prettier && npm update -g
 RUN export PATH=$PATH:/root/.node/bin
 
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 ENTRYPOINT ["gh-actions-docs"]
