@@ -79,12 +79,13 @@ jobs:
           latest_version=$(gh release list --json name,isLatest -q '.[] | select(.isLatest == true) | .name')
           if [[ "$latest_version" == "$VERSION_TAG" ]]; then
             echo "Version already released."
-            exit 0
+          else
+            gh release create \
+              "$VERSION_TAG" \
+              --generate-notes
           fi
 
-          gh release create \
-            "$VERSION_TAG" \
-            --generate-notes
+          echo "Tagging $IMAGE_NAME:$GITHUB_SHA with version tag: $VERSION_TAG"
 
           docker tag "$IMAGE_NAME:$GITHUB_SHA" "$IMAGE_NAME:$VERSION_TAG"
           docker push "$IMAGE_NAME:$VERSION_TAG"
