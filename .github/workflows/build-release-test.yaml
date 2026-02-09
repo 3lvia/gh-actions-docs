@@ -52,7 +52,6 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ (github.event_name == 'push' && github.ref == 'refs/heads/trunk') && format('{0}:latest', env.IMAGE_NAME) || '' }}
-            ${{ (github.event_name == 'push' && github.ref == 'refs/heads/trunk') && format('{0}:{1}', env.IMAGE_NAME, env.VERSION_TAG) || '' }}
           cache-from: 'type=registry,ref=${{ env.IMAGE_NAME }}:latest'
           cache-to: 'type=inline'
 
@@ -74,7 +73,7 @@ jobs:
           sarif_file: ${{ env.TRIVY_SARIF }}
           category: 'Trivy'
 
-      - name: Create release if new version
+      - name: Create release & tag image if new version
         if: ${{ github.event_name == 'push' }}
         run: |
           latest_version=$(gh release list --json name,isLatest -q '.[] | select(.isLatest == true) | .name')
@@ -86,6 +85,9 @@ jobs:
           gh release create \
             "$VERSION_TAG" \
             --generate-notes
+
+          docker tag "$IMAGE_NAME:$GITHUB_SHA" "$IMAGE_NAME:$VERSION_TAG"
+          docker push "$IMAGE_NAME:$VERSION_TAG"
         env:
           GH_TOKEN: ${{ github.token }}
 
