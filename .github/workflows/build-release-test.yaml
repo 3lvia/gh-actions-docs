@@ -56,24 +56,6 @@ jobs:
           cache-from: 'type=registry,ref=${{ env.IMAGE_NAME }}:latest'
           cache-to: 'type=inline'
 
-      #     - name: Scan image with Trivy
-      #       uses: aquasecurity/trivy-action@0.34.2
-      #       with:
-      #         image-ref: '${{ env.IMAGE_NAME }}:${{ github.sha }}'
-      #         format: 'sarif'
-      #         exit-code: '0'
-      #         output: ${{ env.TRIVY_SARIF }}
-      #         ignore-unfixed: 'true'
-      #       env:
-      #         TRIVY_DB_REPOSITORY: 'public.ecr.aws/aquasecurity/trivy-db:2'
-      #         TRIVY_JAVA_DB_REPOSITORY: 'public.ecr.aws/aquasecurity/trivy-java-db:1'
-
-      - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: ${{ env.TRIVY_SARIF }}
-          category: 'Trivy'
-
       - name: Create release & tag image if new version
         if: ${{ github.event_name == 'push' }}
         run: |
@@ -92,16 +74,6 @@ jobs:
           docker push "$IMAGE_NAME:$VERSION_TAG"
         env:
           GH_TOKEN: ${{ github.token }}
-
-      - name: Override major tag
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-          git fetch --tags
-          git tag "$MAJOR_VERSION_TAG" "$VERSION_TAG" -f
-          git push --tags -f
 
   test:
     name: Test
