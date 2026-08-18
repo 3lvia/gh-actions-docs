@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>3lvia/renovate-config:default.json"
+    "3lvia/renovate-config:default.json"
   ]
 }
