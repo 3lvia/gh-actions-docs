@@ -1,57 +1,84 @@
 name: 'gh-actions-docs'
-description: 'Automatically generate documentation for your GitHub Actions.'
+author: '3lvia'
+description: 'Automatically generate pretty documentation for your GitHub Actions!'
 inputs:
   readme-file:
-    description: 'The file to write the documentation to.'
+    description: 'The file to read the action tags from and write the documentation to.'
     required: false
     default: 'README.md'
   debug:
     description: 'Set to `true` to enable debug output.'
     required: false
+    default: 'false'
   ignore-files:
-    description: 'Comma-separated list of `actions.yml`-files to ignore.'
+    description: 'Comma-separated list of `actions.yml`-files to ignore when generating action documentation.'
     required: false
   ignore-headers:
-    description: 'Comma-separated list of headers to ignore.'
+    description: |
+      Comma-separated list of headers to ignore when generating a table of contents.
+      Should include the `#`-prefixes, e.g. `## My Header` or `### My Other Header`.
     required: false
   run-prettier:
-    description: 'Set to `true` to run Prettier on the generated documentation. This assumes Prettier is already installed.'
+    description: 'Set to `true` to run Prettier on the generated documentation.'
     required: false
+    default: 'false'
   no-actions:
-    description: 'Set to `true` to disable generation of actions documentation.'
+    description: |
+      Set to `true` to disable generation of any actions documentation.
+      Useful when you only want to generate a table of contents.
+      This cannot be set to `true` if `no-toc` is also set to `true`.
     required: false
+    default: 'false'
   no-toc:
-    description: 'Set to `true` to disable generation of table of contents.'
+    description: |
+      Set to `true` to disable generation of a table of contents.
+      Useful when you only want to generate actions documentation.
+      This cannot be set to `true` if `no-actions` is also set to `true`.
     required: false
+    default: 'false'
   no-name:
-    description: 'Set to `true` to disable generation of the action name.'
+    description: 'Set to `true` to disable generation of action names.'
     required: false
+    default: 'false'
   no-description:
-    description: 'Set to `true` to disable generation of the action description.'
+    description: 'Set to `true` to disable generation of action descriptions.'
     required: false
+    default: 'false'
   no-inputs:
-    description: 'Set to `true` to disable generation of the action inputs.'
+    description: 'Set to `true` to disable generation of action inputs.'
     required: false
+    default: 'false'
+  no-outputs:
+    description: 'Set to `true` to disable generation of action outputs.'
+    required: false
+    default: 'false'
   no-permissions:
-    description: 'Set to `true` to disable generation of the action permissions.'
+    description: 'Set to `true` to disable generation of action permissions.'
     required: false
+    default: 'false'
   no-usage:
-    description: 'Set to `true` to disable generation of the action usage.'
+    description: 'Set to `true` to disable generation of usage examples.'
     required: false
+    default: 'false'
 
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/3lvia/gh-actions-docs:latest'
-  args:
-    - README_FILE=${{ inputs.readme-file }}
-    - DEBUG=${{ inputs.debug }}
-    - IGNORE_FILES=${{ inputs.ignore-files }}
-    - IGNORE_HEADERS=${{ inputs.ignore-headers }}
-    - RUN_PRETTIER=${{ inputs.run-prettier }}
-    - NO_ACTIONS=${{ inputs.no-actions }}
-    - NO_TOC=${{ inputs.no-toc }}
-    - NO_NAME=${{ inputs.no-name }}
-    - NO_DESCRIPTION=${{ inputs.no-description }}
-    - NO_INPUTS=${{ inputs.no-inputs }}
-    - NO_PERMISSIONS=${{ inputs.no-permissions }}
-    - NO_USAGE=${{ inputs.no-usage }}
+  image: 'docker://ghcr.io/3lvia/gh-actions-docs:v1.2.5' # to update version, change this AND version in gh-actions-docs.cabal!
+  entrypoint: 'gh-actions-docs'
+  env:
+    README_FILE: ${{ inputs.readme-file }}
+    DEBUG: ${{ inputs.debug }}
+    IGNORE_FILES: ${{ inputs.ignore-files }}
+    IGNORE_HEADERS: ${{ inputs.ignore-headers }}
+    RUN_PRETTIER: ${{ inputs.run-prettier }}
+    NO_ACTIONS: ${{ inputs.no-actions }}
+    NO_TOC: ${{ inputs.no-toc }}
+    NO_NAME: ${{ inputs.no-name }}
+    NO_DESCRIPTION: ${{ inputs.no-description }}
+    NO_INPUTS: ${{ inputs.no-inputs }}
+    NO_PERMISSIONS: ${{ inputs.no-permissions }}
+    NO_USAGE: ${{ inputs.no-usage }}
+
+branding:
+  icon: 'zap'
+  color: 'green'
